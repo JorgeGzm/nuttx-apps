@@ -27,16 +27,31 @@ PRIORITY  = $(CONFIG_EXAMPLES_XEDGE_PRIORITY)
 STACKSIZE = $(CONFIG_EXAMPLES_XEDGE_STACKSIZE)
 MODULE    = $(CONFIG_EXAMPLES_XEDGE)
 
+# Repository names
+BAS_UNPACKNAME = BAS
+BAS_RESOURCES_UNPACKNAME = BAS-Resources
+
 # Xedge: BAS Example
 
 MAINSRC = xedge_main.c BAS/src/BAS.c BAS/src/dlmalloc.c BAS/src/arch/Posix/ThreadLib.c BAS/src/arch/NET/generic/SoDisp.c BAS/src/DiskIo/posix/BaFile.c BAS/examples/xedge/src/xedge.c BAS/examples/xedge/ BAS/examples/xedge/XedgeZip.c
 
 XEDGEZIP = BAS/examples/xedge/XedgeZip.c
 
-$(XEDGEZIP):
-	. prepare.sh
+xedge-repos:
+	@if [ ! -d $(BAS_UNPACKNAME) ]; then \
+		echo "Clonando BAS-Resources..."; \
+		git clone https://github.com/RealTimeLogic/BAS.git $(BAS_UNPACKNAME); \
+	fi
 
-context:: $(XEDGEZIP)
+	@if [ ! -d $(BAS_RESOURCES_UNPACKNAME) ]; then \
+		echo "Clonando BAS-Resources..."; \
+		git clone https://github.com/RealTimeLogic/BAS-Resources.git \
+	fi
 
+context:: xedge-repos
+
+distclean::
+	$(call DELDIR, $(BAS_UNPACKNAME))
+	$(call DELDIR, $(BAS_RESOURCES_UNPACKNAME))
 
 include $(APPDIR)/Application.mk
