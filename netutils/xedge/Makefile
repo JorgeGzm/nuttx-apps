@@ -53,13 +53,13 @@ CSRCS = BAS.c dlmalloc.c ThreadLib.c SoDisp.c BaFile.c xedge.c XedgeZip.c
 $(BAS_UNPACKNAME):
 	$(Q) echo "Cloning BAS repository..."
 	$(Q) git clone $(BAS_REPO_URL) $(BAS_UNPACKNAME)
-	$(Q) cd $(BAS_UNPACKNAME) && git checkout $(BAS_HASH)
+	$(Q) cd $(BAS_UNPACKNAME) && git checkout --quiet $(BAS_HASH)
 
 # Clone and setup BAS-Resources repository
 $(BAS_RESOURCES_UNPACKNAME):
 	$(Q) echo "Cloning BAS-Resources repository..."
 	$(Q) git clone $(BAS_RESOURCES_REPO_URL) $(BAS_RESOURCES_UNPACKNAME)
-	$(Q) cd $(BAS_RESOURCES_UNPACKNAME) && git checkout $(BAS_RESOURCES_HASH)
+	$(Q) cd $(BAS_RESOURCES_UNPACKNAME) && git checkout --quiet $(BAS_RESOURCES_HASH)
 
 # Create XedgeZip.c
 $(XEDGEZIP): $(BAS_UNPACKNAME) $(BAS_RESOURCES_UNPACKNAME)
